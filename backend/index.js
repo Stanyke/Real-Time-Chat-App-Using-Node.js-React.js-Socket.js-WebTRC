@@ -1,11 +1,10 @@
 const express = require('express');
 const app = express();
-const server = require('http').createServer(app);
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const sessions = require('express-session');
 const {localPort, sessionTimeOut, SessionSecretKey} = require('./utils/config');
-const socket = require('./socket');
+const {io, server} = require('./socket');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -19,16 +18,29 @@ const sessionInit = sessions({
     resave: false
 });
 
+// const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
+
 app.use(sessionInit);
 app.use(cookieParser());
 
-socket.use(sessionInit);
-socket.use(cookieParser());
+// io.use(wrap(sessionInit));
+// io.use(cookieParser());
+
+app.get('/', (req, res) => {
+    return res.send({ express: 'Hello From Express' });
+});
 
 const port = process.env.PORT || localPort;
 
-app.listen(port, () => {
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../frontend/build')));
+    app.get('*', function(req, res) {
+      res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+    });
+}
+
+server.listen(port, () => {
     console.log(`Server running on port ${port}`)
 });
 
-module.exports = { server }
+module.exports = app;
