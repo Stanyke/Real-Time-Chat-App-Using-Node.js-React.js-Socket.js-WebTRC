@@ -1,13 +1,5 @@
-const app = require('./index');
-const server = require('http').createServer(app);
+const {io} = require('./index');
 const short = require('short-uuid');
-
-const io = require('socket.io')(server, {
-    cors: {
-        origin: '*',
-        methods: '*'
-    }
-});
 
 io.on('connection', (socket) => {
     console.log('User just connected')
@@ -19,4 +11,4 @@ io.on('connection', (socket) => {
     });
 });
 
-module.exports = {io, server};
+module.exports = io;

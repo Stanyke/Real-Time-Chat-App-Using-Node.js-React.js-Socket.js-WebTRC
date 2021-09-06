@@ -4,8 +4,18 @@ const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const sessions = require('express-session');
 const {localPort, sessionTimeOut, SessionSecretKey} = require('./utils/config');
-const {io, server} = require('./socket');
 
+const server = require('http').createServer(app);
+const short = require('short-uuid');
+
+exports.io = require('socket.io')(server, {
+    cors: {
+        origin: '*',
+        methods: '*'
+    }
+});
+
+require('./socket');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -26,7 +36,7 @@ app.use(cookieParser());
 // io.use(wrap(sessionInit));
 // io.use(cookieParser());
 
-app.get('/', (req, res) => {
+app.get('/api/hello', (req, res) => {
     return res.send({ express: 'Hello From Express' });
 });
 
@@ -42,5 +52,3 @@ if (process.env.NODE_ENV === 'production') {
 server.listen(port, () => {
     console.log(`Server running on port ${port}`)
 });
-
-module.exports = app;
