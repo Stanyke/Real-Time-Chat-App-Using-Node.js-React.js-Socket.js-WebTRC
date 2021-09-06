@@ -6,7 +6,6 @@ const sessions = require('express-session');
 const {localPort, sessionTimeOut, SessionSecretKey} = require('./utils/config');
 
 const server = require('http').createServer(app);
-const short = require('short-uuid');
 
 exports.io = require('socket.io')(server, {
     cors: {
