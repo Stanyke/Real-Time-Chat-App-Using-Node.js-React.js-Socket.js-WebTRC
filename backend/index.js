@@ -3,6 +3,7 @@ const app = express();
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const sessions = require('express-session');
+const indexRoutes = require('./routes/index')
 const {localPort, sessionTimeOut, SessionSecretKey} = require('./utils/config');
 
 const server = require('http').createServer(app);
@@ -32,12 +33,11 @@ const sessionInit = sessions({
 app.use(sessionInit);
 app.use(cookieParser());
 
+//intialize all routes
+indexRoutes(app);
+
 // io.use(wrap(sessionInit));
 // io.use(cookieParser());
-
-app.get('/api/hello', (req, res) => {
-    return res.send({ express: 'Hello From Express' });
-});
 
 const port = process.env.PORT || localPort;
 
