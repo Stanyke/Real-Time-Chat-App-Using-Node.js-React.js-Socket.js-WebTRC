@@ -11,12 +11,13 @@ import {
 
 import { AuthStyle } from "../assets/css/AuthStyle";
 import AuthSidebar from "../components/AuthSidebar";
-import {SocketContext} from "../components/SocketContext";
+import { SocketContext } from "../statesManager";
+import ToastBar from "../components/ToastBar";
 
 const useStyles = makeStyles((theme) => AuthStyle(theme));
 
 export default function Login() {
-  const { user, setupUser } = useContext(SocketContext);
+  const { user, setupUser, showToast } = useContext(SocketContext);
   const classes = useStyles();
 
   const handleLogin = async (event) => {
@@ -24,16 +25,19 @@ export default function Login() {
     const username = event.target.username.value;
     const password = event.target.password.value;
 
-    setupUser({username})
-    // await login({ username, password });
+    setupUser({ username, password });
   };
 
   return (
     <Grid container className={classes.homeScreen}>
+
       <AuthSidebar styles={classes} />
 
       <Box className={classes.rightSideContainer}>
         <Grid className={classes.formBox}>
+          {showToast && (
+            <ToastBar />
+          )}
           <Box>
             <Typography className={classes.formNotice}>Hello!</Typography>
           </Box>

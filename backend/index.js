@@ -1,10 +1,29 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const cookieParser = require("cookie-parser");
-const sessions = require('express-session');
 const indexRoutes = require('./routes/index')
-const {localPort, sessionTimeOut, SessionSecretKey} = require('./utils/config');
+const {localPort} = require('./bin/config');
+const dbConfiguration = require('./bin/db');
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(cors());
+
+//initialize db
+dbConfiguration();
+
+//intialize all routes
+indexRoutes(app);
+
+const port = process.env.PORT || localPort;
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../frontend/build')));
+    app.get('*', function(req, res) {
+      res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+    });
+}
 
 const server = require('http').createServer(app);
 
@@ -16,37 +35,6 @@ exports.io = require('socket.io')(server, {
 });
 
 require('./socket');
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-app.use(cors());
-
-const sessionInit = sessions({
-    secret: SessionSecretKey,
-    saveUninitialized: true,
-    cookie: { maxAge: sessionTimeOut },
-    resave: false
-});
-
-// const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
-
-app.use(sessionInit);
-app.use(cookieParser());
-
-//intialize all routes
-indexRoutes(app);
-
-// io.use(wrap(sessionInit));
-// io.use(cookieParser());
-
-const port = process.env.PORT || localPort;
-
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '../frontend/build')));
-    app.get('*', function(req, res) {
-      res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
-    });
-}
 
 server.listen(port, () => {
     console.log(`Server running on port ${port}`)

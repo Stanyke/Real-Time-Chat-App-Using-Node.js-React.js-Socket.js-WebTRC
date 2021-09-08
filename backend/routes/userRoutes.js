@@ -5,7 +5,6 @@ module.exports = function () {
     const userCtrl = new userController();
 
     router.get('/ping', userCtrl.pingMe);
-    router.get('/users', userCtrl.getUsers);
 
 
     return router;

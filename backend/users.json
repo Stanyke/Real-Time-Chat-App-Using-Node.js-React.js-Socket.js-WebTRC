@@ -1,0 +1,60 @@
+{
+    "key": [
+        {
+            "userId": 2,
+            "id": 2,
+            "title": "delectus aut autem",
+            "completed": false
+        },
+        {
+            "userId": 2,
+            "id": 2,
+            "title": "delectus aut autem",
+            "completed": false
+        },
+        {
+            "userId": 2,
+            "id": 2,
+            "title": "delectus aut autem",
+            "completed": false
+        },
+        {
+            "userId": 2,
+            "id": 2,
+            "title": "delectus aut autem",
+            "completed": false
+        },
+        {
+            "userId": 2,
+            "id": 2,
+            "title": "delectus aut autem",
+            "completed": false
+        },
+        {
+            "userId": 2,
+            "id": 2,
+            "title": "delectus aut autem",
+            "completed": false
+        }
+    ],
+    "key2": [
+        {
+            "userId": 2,
+            "id": 2,
+            "title": "delectus aut autem 😀",
+            "completed": false
+        }
+    ],
+    "": {
+        "username": "",
+        "password": "123456"
+    },
+    "chibuike.stanley50@gmail.com": {
+        "username": "chibuike.stanley50@gmail.com",
+        "password": "$2b$10$5DarodmsVohHboXNVJ/0.eaGzz3njvQd367WNzdVR/YfZgP.1WXeC"
+    },
+    "stanyke": {
+        "username": "stanyke",
+        "password": "$2b$10$Sa9Nkm/0sDwiH9gkRfb.cu/WPOwC28rtv/PwZ9D0VXFcQY26COUx."
+    }
+}

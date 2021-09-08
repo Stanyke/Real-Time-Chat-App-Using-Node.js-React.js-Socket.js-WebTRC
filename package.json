@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "client": "cd frontend && npm start",
-    "server": "cd backend && nodemon server.js",
+    "server": "cd backend && nodemon index.js",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
-    "start": "cd backend && node server.js",
+    "start": "cd backend && node index.js",
     "heroku-postbuild": "cd frontend && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "repository": {
@@ -21,10 +21,11 @@
   },
   "homepage": "https://github.com/Stanyke/Real-Time-Chat-App-Using-Node.js-React.js-Socket.js-WebTRC#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "concurrently": "^6.2.1",
-    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
-    "express-session": "^1.17.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.5",
     "nodemon": "^2.0.12",
     "short-uuid": "^4.2.0",
     "socket.io": "^4.2.0"
