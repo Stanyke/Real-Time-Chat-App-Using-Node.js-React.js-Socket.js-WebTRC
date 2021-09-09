@@ -8,6 +8,7 @@ import {
   TextField,
   makeStyles,
 } from "@material-ui/core";
+import { Redirect } from "react-router-dom";
 
 import { AuthStyle } from "../assets/css/AuthStyle";
 import AuthSidebar from "../components/AuthSidebar";
@@ -15,9 +16,10 @@ import { SocketContext } from "../statesManager";
 import ToastBar from "../components/ToastBar";
 
 const useStyles = makeStyles((theme) => AuthStyle(theme));
+const {REACT_APP_AFTER_LOGIN_REDIRECT_URL} = process.env;
 
 export default function Login() {
-  const { user, setupUser, showToast } = useContext(SocketContext);
+  const { setupUser, showToast, authToken } = useContext(SocketContext);
   const classes = useStyles();
 
   const handleLogin = async (event) => {
@@ -28,6 +30,10 @@ export default function Login() {
     setupUser({ username, password });
   };
 
+  if(authToken){
+    return <Redirect to={REACT_APP_AFTER_LOGIN_REDIRECT_URL} />;
+  }
+  
   return (
     <Grid container className={classes.homeScreen}>
 

@@ -31,12 +31,12 @@ export default function ToastBar() {
   };
 
   return (
-    <div className={classes.root}>
+    <Box className={classes.root}>
       <Snackbar anchorOrigin={position} open={showToast} autoHideDuration={duration} onClose={handleClose}>
         <Alert onClose={handleClose} severity={type}>
           {message}
         </Alert>
       </Snackbar>
-    </div>
+    </Box>
   );
 }

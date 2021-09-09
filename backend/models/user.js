@@ -24,7 +24,8 @@ UserSchema.methods.generateToken = async function () {
 	const user = this;
 	const token = jwt.sign(
 		{ _id: user._id.toString() },
-		jwtSecret
+		jwtSecret,
+        { expiresIn: '7d' }
 	);
 
 	return token;

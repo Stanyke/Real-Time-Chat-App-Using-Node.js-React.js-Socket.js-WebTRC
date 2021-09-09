@@ -14,12 +14,12 @@ class userService{
     verifyAuthToken = async (token) => {
         try{
             const decode = await jwt.verify(token, jwtSecret);
-            const user = this.getUserById(decode._id);
-            return user;
+            const user = await this.getUserById(decode._id);
+            return appResponse(200, 'Auth successful', {user, token, authVerified: true});
         } catch (err) {
             const errors = ["TokenExpiredError", "NotBeforeError", "JsonWebTokenError"];
             if (errors.includes(err?.name)) {
-                return appResponse(401, "Invalid token, try logging in again");
+                return appResponse(401, "Invalid token, try logging in again", {authVerified: false});
             }
             return appResponse(500);
         }
@@ -30,7 +30,7 @@ class userService{
         if(user){
             delete user.password;
         }
-        return {...user, token};
+        return user;
     }
 
     getUserByUsername = async (username) => {

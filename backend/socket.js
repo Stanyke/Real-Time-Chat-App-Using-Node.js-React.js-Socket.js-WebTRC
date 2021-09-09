@@ -10,13 +10,9 @@ io.on('connection', (socket) => {
         socket.emit('user', response.data);
     });
 
-    socket.on('authenticateUser', async ({token}) => {
+    socket.on('authenticateUser', async (token) => {
         const response = await userServiceInstance.verifyAuthToken(token);
-
-        if(response.data.success){
-            socket['user'] = response.data.user.username;
-        }
-        socket.emit('user', response);
+        socket.emit('user', response.data);
     })
 });
 
