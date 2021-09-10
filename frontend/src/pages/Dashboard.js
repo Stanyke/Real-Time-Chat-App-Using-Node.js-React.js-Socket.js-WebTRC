@@ -1,6 +1,5 @@
 import React, { useEffect, useContext } from "react";
 import {
-  Grid,
   Box,
   Typography,
   Button,
@@ -8,32 +7,51 @@ import {
   TextField,
   makeStyles,
 } from "@material-ui/core";
-import { Link, Redirect } from "react-router-dom";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import { Link, useHistory } from "react-router-dom";
 import WaitForPageLoad from "../components/WaitForPageLoad";
+import Header from "../components/Header";
 
-import { AuthStyle } from "../assets/css/AuthStyle";
+import { DashboardStyle } from "../assets/css/DashboardStyle";
 import AuthSidebar from "../components/AuthSidebar";
 import { SocketContext } from "../statesManager";
 import ToastBar from "../components/ToastBar";
 
-const useStyles = makeStyles((theme) => AuthStyle(theme));
+const useStyles = makeStyles((theme) => DashboardStyle(theme));
 
 export default function Dashboard() {
-    const { user, showToast, authToken, pageLoaded } = useContext(SocketContext);
-    const classes = useStyles();
-    
-    useEffect(() => {
-        if(!authToken){
-            return <Redirect to={process.env.REACT_APP_BEFORE_LOGIN_REDIRECT_URL} />;
-        }
-    }, []);
-    if(!authToken){
-        return <Redirect to={process.env.REACT_APP_BEFORE_LOGIN_REDIRECT_URL} />;
-    }
+  const { user, showToast, authToken, pageLoaded } = useContext(SocketContext);
+  const classes = useStyles();
+  const history = useHistory();
 
-  return (
-    <>
-        {!pageLoaded && <WaitForPageLoad />}
-    </>
-  );
+  const checkUserLoginState = (authToken) => {
+    if (!authToken) {
+      return history.push(process.env.REACT_APP_BEFORE_LOGIN_REDIRECT_URL);
+    }
+    return;
+  };
+
+  useEffect(() => {
+    checkUserLoginState(authToken);
+  }, [authToken]);
+  checkUserLoginState(authToken);
+
+  if (!pageLoaded) {
+    return <WaitForPageLoad />;
+  } else {
+    return (
+      <>
+        <Header user={user} />
+        <Box className={classes.root}>
+          <Box className={classes.box}>
+            <Paper className={classes.paper}>xs=12</Paper>
+          </Box>
+          <Box className={classes.box}>
+            <Paper className={classes.paper}>xs=12</Paper>
+          </Box>
+        </Box>
+      </>
+    );
+  }
 }
