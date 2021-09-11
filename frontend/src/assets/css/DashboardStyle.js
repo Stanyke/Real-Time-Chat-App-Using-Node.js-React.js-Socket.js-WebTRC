@@ -4,16 +4,63 @@ export const DashboardStyle = (theme) => {
             flexGrow: 1,
             display: 'grid',
             gridTemplateColumns: '35% 65%',
-            marginTop: '50px'
+            marginTop: '50px',
+
+            "@media (max-width: 700px)": {
+                gridTemplateColumns: "100%"
+            }
         },
         box: {
             width: '90%',
             justifySelf: 'center',
         },
+        leftSide: {
+            height: '500px',
+            maxHeight: '500px',
+            overflow: 'auto',
+
+            '&::-webkit-scrollbar': {
+                width: "0.4em"
+            },
+            '&::-webkit-scrollbar-track': {
+                boxShadow: "inset 0 0 5px grey",
+                borderRadius: "10px",
+            },
+            '&::-webkit-scrollbar-thumb': {
+                background: "tomato",
+                borderRadius: "10px",
+            },
+            '&::-webkit-scrollbar-thumb:hover': {
+                background: "#d33939",
+            },
+
+            "@media (max-width: 700px)": {
+                height: '300px',
+                maxHeight: '300px',
+            },
+        },
+        titleBar: {
+            fontSize: '30px',
+            fontWeight: 'bold',
+            color: '#333',
+            textAlign: 'center',
+            fontFamily: 'Cursive'
+        },
         paper: {
             padding: theme.spacing(2),
-            textAlign: 'center',
             color: theme.palette.text.secondary,
+            background: '#999',
+            marginBottom: '10px',
         },
+        rightPaper: {
+            color: 'black',
+            background: '#b9b9b9',
+        },
+        singleChat: {
+            cursor: 'pointer'
+        },
+        emptyItem: {
+            textAlign: 'center'
+        }
     }
 }

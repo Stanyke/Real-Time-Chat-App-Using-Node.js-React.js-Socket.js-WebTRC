@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import {
   Box,
   Typography,
@@ -12,6 +12,8 @@ import Grid from "@material-ui/core/Grid";
 import { Link, useHistory } from "react-router-dom";
 import WaitForPageLoad from "../components/WaitForPageLoad";
 import Header from "../components/Header";
+import ChatLists from "../components/ChatLists";
+import ChatHeader from "../components/ChatHeader";
 
 import { DashboardStyle } from "../assets/css/DashboardStyle";
 import AuthSidebar from "../components/AuthSidebar";
@@ -24,31 +26,34 @@ export default function Dashboard() {
   const { user, showToast, authToken, pageLoaded } = useContext(SocketContext);
   const classes = useStyles();
   const history = useHistory();
+  const [hasToken, setHasToken] = useState(true);
 
   const checkUserLoginState = (authToken) => {
-    if (!authToken) {
+    if (!authToken || !hasToken) {
       return history.push(process.env.REACT_APP_BEFORE_LOGIN_REDIRECT_URL);
     }
-    return;
   };
 
   useEffect(() => {
+    console.log('33333333333333')
     checkUserLoginState(authToken);
-  }, [authToken]);
-  checkUserLoginState(authToken);
+  }, [hasToken]);
 
   if (!pageLoaded) {
     return <WaitForPageLoad />;
   } else {
     return (
       <>
-        <Header user={user} />
+        <Header user={user} setHasToken={setHasToken} />
         <Box className={classes.root}>
-          <Box className={classes.box}>
-            <Paper className={classes.paper}>xs=12</Paper>
+          <Box className={`${classes.box} ${classes.leftSide}`}>
+            <Typography className={classes.titleBar}>Chats</Typography>
+            <ChatLists styles={classes}/>
           </Box>
-          <Box className={classes.box}>
-            <Paper className={classes.paper}>xs=12</Paper>
+          <Box className={`${classes.box} ${classes.rightSider}`}>
+            <Paper className={classes.rightPaper}>
+                <ChatHeader />
+            </Paper>
           </Box>
         </Box>
       </>

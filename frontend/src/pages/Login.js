@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   Grid,
   Box,
@@ -8,7 +8,7 @@ import {
   TextField,
   makeStyles,
 } from "@material-ui/core";
-import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import { AuthStyle } from "../assets/css/AuthStyle";
 import AuthSidebar from "../components/AuthSidebar";
@@ -19,8 +19,9 @@ const useStyles = makeStyles((theme) => AuthStyle(theme));
 const {REACT_APP_AFTER_LOGIN_REDIRECT_URL} = process.env;
 
 export default function Login() {
-  const { setupUser, showToast, authToken } = useContext(SocketContext);
+  const { setupUser, showToast, authToken, hasInternetConnection } = useContext(SocketContext);
   const classes = useStyles();
+  const history = useHistory();
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -30,9 +31,12 @@ export default function Login() {
     setupUser({ username, password });
   };
 
-  if(authToken){
-    return <Redirect to={REACT_APP_AFTER_LOGIN_REDIRECT_URL} />;
-  }
+  useEffect(() => {
+    if(authToken){
+      return history.push(REACT_APP_AFTER_LOGIN_REDIRECT_URL);
+    }
+  }, [authToken]);
+
   
   return (
     <Grid container className={classes.homeScreen}>
@@ -41,7 +45,7 @@ export default function Login() {
 
       <Box className={classes.rightSideContainer}>
         <Grid className={classes.formBox}>
-          {showToast && (
+          {!hasInternetConnection && (
             <ToastBar />
           )}
           <Box>

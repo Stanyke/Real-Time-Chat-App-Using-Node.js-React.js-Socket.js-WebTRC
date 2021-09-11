@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import { alpha, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -13,6 +13,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
+import {SocketContext} from "../statesManager";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -79,7 +80,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Header(props) {
-  const { user } = props;
+  const { user, setHasToken } = props;
+  const { removeToken } = useContext(SocketContext);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -104,6 +106,11 @@ export default function Header(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const logoutUser = async () => {
+    await removeToken();
+    setHasToken(false);
+  }
+
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -116,6 +123,7 @@ export default function Header(props) {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Hi, {user.username}</MenuItem>
+      <MenuItem onClick={() => logoutUser()}>Logout</MenuItem>
     </Menu>
   );
 
