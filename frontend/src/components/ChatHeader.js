@@ -16,6 +16,7 @@ import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import AddIcCallIcon from '@material-ui/icons/AddIcCall';
 import VideoCallIcon from '@material-ui/icons/VideoCall';
+import PersonIcon from '@material-ui/icons/Person';
 
 import { DashboardStyle } from "../assets/css/DashboardStyle";
 import AuthSidebar from "./AuthSidebar";
@@ -43,7 +44,7 @@ export default function ChatHeader(props) {
         showLabels
         className={classes.root}
       >
-        <BottomNavigationAction label="Stanyke" />
+        <BottomNavigationAction label="Stanyke" icon={<PersonIcon />} />
         <BottomNavigationAction label="Voice Call" icon={<AddIcCallIcon />} />
         <BottomNavigationAction label="Video Call" icon={<VideoCallIcon />} />
       </BottomNavigation>
