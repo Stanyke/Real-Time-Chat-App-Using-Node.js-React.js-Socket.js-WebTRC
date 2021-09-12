@@ -2,6 +2,7 @@ import React, {createContext, useState, useRef, useEffect} from 'react';
 import {io} from 'socket.io-client';
 import Peer from 'simple-peer';
 import { Redirect } from "react-router-dom";
+import axios from 'axios';
 
 const {REACT_APP_SERVER_URL} = process.env;
 
@@ -18,6 +19,7 @@ const SocketContextProvider = ({children}) => {
     const [hasInternetConnection, setHasInternetConnection] = useState(true);
     const [authToken, setAuthToken] = useState(localStorage.getItem("token"));
     const [chats, setChats] = useState({});
+    const [chatsFilter, setChatsFilter] = useState({});
 
     const toastHandler = (toast) => {
         setToastData(toast);
@@ -57,6 +59,11 @@ const SocketContextProvider = ({children}) => {
                     localStorage.setItem("token", token);
                     setAuthToken(token)
                 }
+
+                //setup axios defaults for subsequent requests
+                axios.defaults.baseURL = REACT_APP_SERVER_URL;
+                axios.defaults.headers.common['x-auth-token'] = token;
+                axios.defaults.headers.post['Content-Type'] = 'application/json';
             } else {
                 if(authToken){
                     removeToken();
@@ -73,6 +80,10 @@ const SocketContextProvider = ({children}) => {
         hasInternetConnection && socket.emit('login', {username, password});
     }
 
+    const filterChats = async (search) => {
+        console.log(await axios.get(`/api/v1/chats?search=${search}`));
+    }
+
     return (
         <SocketContext.Provider value={{
             setupUser,
@@ -84,7 +95,9 @@ const SocketContextProvider = ({children}) => {
             pageLoaded,
             hasInternetConnection,
             removeToken,
-            chats
+            chats,
+            chatsFilter,
+            filterChats
         }}>
             {children}
         </SocketContext.Provider>

@@ -81,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header(props) {
   const { user, setHasToken } = props;
-  const { removeToken } = useContext(SocketContext);
+  const { removeToken, filterChats } = useContext(SocketContext);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -186,7 +186,7 @@ export default function Header(props) {
                 input: classes.inputInput,
               }}
               inputProps={{ "aria-label": "search" }}
-              // onChange={}
+              onKeyUp={(e) => filterChats(e.target.value)}
             />
           </div>
           <div className={classes.grow} />
