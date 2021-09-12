@@ -15,6 +15,7 @@ class userService{
         try{
             const decode = await jwt.verify(token, jwtSecret);
             const user = await this.getUserById(decode._id);
+            await this.updateUserLastSeen(user._id);
             return appResponse(200, 'Auth successful', {user, token, authVerified: true});
         } catch (err) {
             const errors = ["TokenExpiredError", "NotBeforeError", "JsonWebTokenError"];
@@ -41,6 +42,10 @@ class userService{
         return user;
     }
 
+    getUserMessages = async (user_id) => {
+        
+    }
+
     userLogin = async (data) => {
         try{
             let {username, password} = data;
@@ -58,6 +63,7 @@ class userService{
                     return appResponse(400, 'Invalid credentials');
                 }
 
+                await this.updateUserLastSeen(user._id);
                 const token = await user.generateToken();
                 return appResponse(200, 'Login successful', {user, token});
             }
@@ -66,12 +72,21 @@ class userService{
             await newUser.save();
             user = await this.getUserByUsername(username);
 
+            await this.updateUserLastSeen(user._id);
             const token = await user.generateToken();
             return appResponse(200, 'Login successful', {user, token});
         }
         catch(err){
             return appResponse(500);
         }
+    }
+
+    updateUserLastSeen = async (user_id) => {
+        await User.findOneAndUpdate(
+				{ _id: user_id },
+				{ $set: { lastSeen: Date.now() } },
+				{ new: true, select: "-__v -createdAt -updatedAt" }
+			);
     }
 }
 

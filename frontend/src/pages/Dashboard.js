@@ -13,7 +13,7 @@ import { Link, useHistory } from "react-router-dom";
 import WaitForPageLoad from "../components/WaitForPageLoad";
 import Header from "../components/Header";
 import ChatLists from "../components/ChatLists";
-import ChatHeader from "../components/ChatHeader";
+import ActiveChat from "../components/ActiveChat";
 
 import { DashboardStyle } from "../assets/css/DashboardStyle";
 import AuthSidebar from "../components/AuthSidebar";
@@ -35,7 +35,6 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    console.log('33333333333333')
     checkUserLoginState(authToken);
   }, [hasToken]);
 
@@ -52,7 +51,7 @@ export default function Dashboard() {
           </Box>
           <Box className={`${classes.box} ${classes.rightSider}`}>
             <Paper className={classes.rightPaper}>
-                <ChatHeader />
+                <ActiveChat user={user} />
             </Paper>
           </Box>
         </Box>

@@ -17,37 +17,58 @@ import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import AddIcCallIcon from '@material-ui/icons/AddIcCall';
 import VideoCallIcon from '@material-ui/icons/VideoCall';
 import PersonIcon from '@material-ui/icons/Person';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
 
 import { DashboardStyle } from "../assets/css/DashboardStyle";
 import AuthSidebar from "./AuthSidebar";
 import { SocketContext } from "../statesManager";
 import ToastBar from "./ToastBar";
+import RelativeTimeFormat from "./RelativeTimeFormat";
 
 const useStyles = makeStyles({
     root: {
-      width: 500,
-      background: 'transparent'
+      color: 'black',
+      background: '#b9b9b9',
+      width: '100%'
     },
+    arrowBack: {
+      display: "none",
+
+      "@media (max-width: 700px)": {
+        display: "block",
+      }
+    },
+    lastSeenBox: {
+      background: '#f3ecec',
+      height: "auto",
+    },
+    lastSeenText: {
+      fontSize: "10px",
+      padding: '0px 10px',
+      color: '#999'
+    }
   });
 
 export default function ChatHeader(props) {
-  const { styles } = props;
+  const { user } = props;
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+
+  
   return (
     <>
       <BottomNavigation
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-        }}
         showLabels
         className={classes.root}
       >
+        <BottomNavigationAction className={classes.arrowBack} label="Chats" icon={<ArrowBackIcon />} />
         <BottomNavigationAction label="Stanyke" icon={<PersonIcon />} />
-        <BottomNavigationAction label="Voice Call" icon={<AddIcCallIcon />} />
-        <BottomNavigationAction label="Video Call" icon={<VideoCallIcon />} />
+        <BottomNavigationAction label="Voice" icon={<AddIcCallIcon />} />
+        <BottomNavigationAction label="Video" icon={<VideoCallIcon />} />
       </BottomNavigation>
+      <Box className={classes.lastSeenBox}>
+        <Typography className={classes.lastSeenText}>{`Last Seen: ${RelativeTimeFormat(user.lastSeen)}`}</Typography>
+      </Box>
     </>
   );
 }

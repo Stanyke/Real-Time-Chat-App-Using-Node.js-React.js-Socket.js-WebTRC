@@ -53,8 +53,8 @@ export const DashboardStyle = (theme) => {
             marginBottom: '10px',
         },
         rightPaper: {
-            color: 'black',
-            background: '#b9b9b9',
+            height: 'calc(100vh - 120px)',
+            border: '1px solid white',
         },
         singleChat: {
             cursor: 'pointer'

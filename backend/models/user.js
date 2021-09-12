@@ -6,6 +6,7 @@ const {jwtSecret} = require('../bin/config');
 const UserSchema = mongoose.Schema({
     username: { type: String },
     password: { type: String },
+    lastSeen: { type: String, default: '' }
 }, { timestamps: true});
 
 UserSchema.pre("save", function (next) {
