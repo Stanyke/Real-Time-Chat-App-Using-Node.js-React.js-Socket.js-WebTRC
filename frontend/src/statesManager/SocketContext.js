@@ -20,6 +20,7 @@ const SocketContextProvider = ({children}) => {
     const [authToken, setAuthToken] = useState(localStorage.getItem("token"));
     const [chats, setChats] = useState({});
     const [chatsFilter, setChatsFilter] = useState({});
+    const [activeChat, setActiveChat] = useState({});
 
     const toastHandler = (toast) => {
         setToastData(toast);
@@ -80,8 +81,17 @@ const SocketContextProvider = ({children}) => {
         hasInternetConnection && socket.emit('login', {username, password});
     }
 
-    const filterChats = async (search) => {
-        console.log(await axios.get(`/api/v1/chats?search=${search}`));
+    const searchThroughChats = async (search) => {
+        if(!search){
+            return setChatsFilter({});
+        }
+        const {data} = await axios.get(`/api/v1/chats?search=${search}`);
+        setChatsFilter(data);
+        console.log(data);
+    }
+
+    const switchActiveChat = async (otherUserId) => {
+        setActiveChat(otherUserId);
     }
 
     return (
@@ -97,7 +107,9 @@ const SocketContextProvider = ({children}) => {
             removeToken,
             chats,
             chatsFilter,
-            filterChats
+            searchThroughChats,
+            activeChat,
+            switchActiveChat
         }}>
             {children}
         </SocketContext.Provider>

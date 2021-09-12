@@ -10,24 +10,32 @@ import {
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { Link, useHistory } from "react-router-dom";
-import WaitForPageLoad from "../WaitForPageLoad";
-import Header from "../Header";
+import WaitForPageLoad from "../../WaitForPageLoad";
+import Header from "../../Header";
+import FilteredSearch from "./FilteredSearch";
 
-import { DashboardStyle } from "../../assets/css/DashboardStyle";
-import AuthSidebar from "../AuthSidebar";
-import { SocketContext } from "../../statesManager";
-import ToastBar from "../ToastBar";
+import { DashboardStyle } from "../../../assets/css/DashboardStyle";
+import AuthSidebar from "../../AuthSidebar";
+import { SocketContext } from "../../../statesManager";
+import ToastBar from "../../ToastBar";
 
 export default function ChatLists(props) {
-  const {styles, chats} = props;
+  const {styles, chats, chatsFilter} = props;
+  
+  if(chatsFilter?.success){
+    return <FilteredSearch chatsFilter={chatsFilter} styles={styles} />
+  }
+
   return (
-    chats.length ? 
     <>
+      <Typography className={styles.titleBar}>Chats</Typography>
+      {chats.length ? 
+      <>
         <Paper className={`${styles.paper} ${styles.singleChat}`}>xs=12</Paper>
         <Paper className={`${styles.paper} ${styles.singleChat}`}>xs=12</Paper>
         <Paper className={`${styles.paper} ${styles.singleChat}`}>xs=12</Paper>
         <Paper className={`${styles.paper} ${styles.singleChat}`}>xs=12</Paper>
-    </> :
-    <Typography className={styles.emptyItem}>No Messages Available.</Typography>
+      </> : <Typography className={styles.emptyItem}>No Messages Available.</Typography>}
+    </>
   );
 }

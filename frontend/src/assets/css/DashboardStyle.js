@@ -49,7 +49,7 @@ export const DashboardStyle = (theme) => {
         paper: {
             padding: theme.spacing(2),
             color: theme.palette.text.secondary,
-            background: '#999',
+            background: '#c8d4e4',
             marginBottom: '10px',
         },
         rightPaper: {

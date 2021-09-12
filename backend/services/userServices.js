@@ -4,7 +4,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const {jwtSecret} = require('../bin/config');
 const {appResponse} = require("../utils/appResponse");
-const {getUserConversation, searchConversation} = require("./conversationServices");
+const {getUserConversation, searchConversation, filterUserConversation} = require("./conversationServices");
+const ConversationUser = require("../models/conversation_user");
 
 class userService{
 
@@ -96,9 +97,23 @@ class userService{
 
     search = async (options) => {
         const {search, user_id, username} = options;
-        const users = await User.find({username: search}, "-__v -password");
+        const users = await User.find({username: {'$regex' : search, '$options' : 'i'}}, "-__v -password");
+        let userData = [];
+        const currentUserConversations = await ConversationUser.find({userId: user_id}, "-__v");
+        for await(const otherUser of users){
+            const obj = await filterUserConversation(user_id, otherUser._id, currentUserConversations);
+            obj.user = otherUser;
+            if(!obj.conversation || !obj.messages){
+                obj.conversation = {},
+                obj.messages = []
+                userData.push(obj);
+            } else {
+                userData.push(obj);
+            }
+        };
+
         const chats = await searchConversation(options);
-        return appResponse(200, 'Search results', {users, chats});
+        return appResponse(200, 'Search results', {users: userData, chats});
     }
 }
 
