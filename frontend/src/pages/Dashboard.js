@@ -12,8 +12,8 @@ import Grid from "@material-ui/core/Grid";
 import { Link, useHistory } from "react-router-dom";
 import WaitForPageLoad from "../components/WaitForPageLoad";
 import Header from "../components/Header";
-import ChatLists from "../components/ChatLists";
-import ActiveChat from "../components/ActiveChat/index";
+import ChatLists from "../components/chats/ChatLists";
+import ActiveChat from "../components/chats/activeChat";
 
 import { DashboardStyle } from "../assets/css/DashboardStyle";
 import AuthSidebar from "../components/AuthSidebar";
@@ -23,7 +23,7 @@ import ToastBar from "../components/ToastBar";
 const useStyles = makeStyles((theme) => DashboardStyle(theme));
 
 export default function Dashboard() {
-  const { user, showToast, authToken, pageLoaded } = useContext(SocketContext);
+  const { user, showToast, authToken, pageLoaded, chats } = useContext(SocketContext);
   const classes = useStyles();
   const history = useHistory();
   const [hasToken, setHasToken] = useState(true);
@@ -47,11 +47,11 @@ export default function Dashboard() {
         <Box className={classes.root}>
           <Box className={`${classes.box} ${classes.leftSide}`}>
             <Typography className={classes.titleBar}>Chats</Typography>
-            <ChatLists styles={classes}/>
+            <ChatLists chats={chats} styles={classes}/>
           </Box>
           <Box className={`${classes.box} ${classes.rightSider}`}>
             <Paper className={classes.rightPaper}>
-                <ActiveChat user={user} />
+                <ActiveChat chats={chats} user={user} />
             </Paper>
           </Box>
         </Box>

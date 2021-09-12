@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const {jwtSecret} = require('../bin/config');
 const {appResponse} = require("../utils/appResponse");
+const {getUserConversation, searchConversation} = require("./conversationServices");
 
 class userService{
 
@@ -11,13 +12,19 @@ class userService{
         return {"data": {"success": true, "message": 'Pinged'}, "statusCode": 200}
     }
 
+    decryptToken = async (token) => {
+        return await jwt.verify(token, jwtSecret);
+    }
+
     verifyAuthToken = async (token) => {
         try{
-            const decode = await jwt.verify(token, jwtSecret);
+            const decode = await this.decryptToken(token);
             const user = await this.getUserById(decode._id);
             await this.updateUserLastSeen(user._id);
-            return appResponse(200, 'Auth successful', {user, token, authVerified: true});
+            const chats = await getUserConversation(user._id);
+            return appResponse(200, 'Auth successful', {user, token, authVerified: true, chats});
         } catch (err) {
+            console.log(err)
             const errors = ["TokenExpiredError", "NotBeforeError", "JsonWebTokenError"];
             if (errors.includes(err?.name)) {
                 return appResponse(401, "Invalid token, try logging in again", {authVerified: false});
@@ -42,10 +49,6 @@ class userService{
         return user;
     }
 
-    getUserMessages = async (user_id) => {
-        
-    }
-
     userLogin = async (data) => {
         try{
             let {username, password} = data;
@@ -65,7 +68,8 @@ class userService{
 
                 await this.updateUserLastSeen(user._id);
                 const token = await user.generateToken();
-                return appResponse(200, 'Login successful', {user, token});
+                const chats = await getUserConversation(user._id);
+                return appResponse(200, 'Login successful', {user, token, chats});
             }
 
             const newUser = new User(data);
@@ -74,7 +78,8 @@ class userService{
 
             await this.updateUserLastSeen(user._id);
             const token = await user.generateToken();
-            return appResponse(200, 'Login successful', {user, token});
+            const chats = await getUserConversation(user._id);
+            return appResponse(200, 'Login successful', {user, token, chats});
         }
         catch(err){
             return appResponse(500);
@@ -87,6 +92,13 @@ class userService{
 				{ $set: { lastSeen: Date.now() } },
 				{ new: true, select: "-__v -createdAt -updatedAt" }
 			);
+    }
+
+    search = async (options) => {
+        const {search, user_id, username} = options;
+        const users = await User.find({username: search}, "-__v -password");
+        const chats = await searchConversation(options);
+        return appResponse(200, 'Search results', {users, chats});
     }
 }
 

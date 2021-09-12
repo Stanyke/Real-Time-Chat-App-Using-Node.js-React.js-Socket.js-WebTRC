@@ -17,6 +17,7 @@ const SocketContextProvider = ({children}) => {
     const [pageLoaded, setpageLoaded] = useState(false);
     const [hasInternetConnection, setHasInternetConnection] = useState(true);
     const [authToken, setAuthToken] = useState(localStorage.getItem("token"));
+    const [chats, setChats] = useState({});
 
     const toastHandler = (toast) => {
         setToastData(toast);
@@ -45,11 +46,12 @@ const SocketContextProvider = ({children}) => {
         
         socket.on('user', async (data) => {
             console.log('22222', data)
-            const {message, success, user, token, authVerified} = data;
+            const {message, success, user, token, authVerified, chats} = data;
             let toast;
             if(success){
                 toast = { type: 'success', message, duration: 6000 };
                 setUser(user);
+                setChats(chats);
                 setpageLoaded(true);// Since user is authenticated
                 if(!authVerified){ //only come in when validating token
                     localStorage.setItem("token", token);
@@ -58,6 +60,7 @@ const SocketContextProvider = ({children}) => {
             } else {
                 if(authToken){
                     removeToken();
+                    window.location = '/';
                 }
                 toast = { type: 'error', message, duration: 6000 };
             }
@@ -80,7 +83,8 @@ const SocketContextProvider = ({children}) => {
             authToken,
             pageLoaded,
             hasInternetConnection,
-            removeToken
+            removeToken,
+            chats
         }}>
             {children}
         </SocketContext.Provider>

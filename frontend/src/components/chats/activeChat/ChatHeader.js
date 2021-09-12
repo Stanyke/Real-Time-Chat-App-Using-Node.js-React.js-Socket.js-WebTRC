@@ -10,8 +10,8 @@ import {
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { Link, useHistory } from "react-router-dom";
-import WaitForPageLoad from "../WaitForPageLoad";
-import Header from "../Header";
+import WaitForPageLoad from "../../WaitForPageLoad";
+import Header from "../../Header";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import AddIcCallIcon from '@material-ui/icons/AddIcCall';
@@ -20,11 +20,11 @@ import PersonIcon from '@material-ui/icons/Person';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 
-import { DashboardStyle } from "../../assets/css/DashboardStyle";
-import AuthSidebar from "../AuthSidebar";
-import { SocketContext } from "../../statesManager";
-import ToastBar from "../ToastBar";
-import RelativeTimeFormat from "../RelativeTimeFormat";
+import { DashboardStyle } from "../../../assets/css/DashboardStyle";
+import AuthSidebar from "../../AuthSidebar";
+import { SocketContext } from "../../../statesManager";
+import ToastBar from "../../ToastBar";
+import RelativeTimeFormat from "../../RelativeTimeFormat";
 
 const useStyles = makeStyles({
     root: {

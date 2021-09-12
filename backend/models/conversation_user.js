@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const {model, Schema} = require('mongoose');
 
-const ConversationUserSchema = mongoose.Schema({
+const ConversationUserSchema = new Schema({
     conversationId: { type: Schema.Types.ObjectId },
-    userId: { type: Boolean, default: false },
+    userId: { type: Schema.Types.ObjectId },
 }, { timestamps: true});
 
-const ConversationUser = module.exports = mongoose.model('Conversation_User', ConversationUserSchema);
+const ConversationUser = module.exports = model('Conversation_User', ConversationUserSchema);
