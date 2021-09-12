@@ -13,7 +13,7 @@ import { Link, useHistory } from "react-router-dom";
 import WaitForPageLoad from "../components/WaitForPageLoad";
 import Header from "../components/Header";
 import ChatLists from "../components/ChatLists";
-import ActiveChat from "../components/ActiveChat";
+import ActiveChat from "../components/ActiveChat/index";
 
 import { DashboardStyle } from "../assets/css/DashboardStyle";
 import AuthSidebar from "../components/AuthSidebar";
