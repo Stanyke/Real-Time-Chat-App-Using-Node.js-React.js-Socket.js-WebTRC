@@ -1,20 +1,38 @@
-const units = {
-    year  : 24 * 60 * 60 * 1000 * 365,
-    month : 24 * 60 * 60 * 1000 * 365/12,
-    day   : 24 * 60 * 60 * 1000,
-    hour  : 60 * 60 * 1000,
-    minute: 60 * 1000,
-    second: 1000
-}
+function getRelativeTime(previous) {
 
-const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' })
-const getRelativeTime = (d1, d2 = new Date()) => {
-    const elapsed = d1 - d2
+    let current = new Date();
 
-    // "Math.abs" accounts for both "past" & "future" scenarios
-    for (let u in units) 
-        if (Math.abs(elapsed) > units[u] || u === 'second')
-        return rtf.format(Math.round(elapsed/units[u]), u)
+    var msPerMinute = 60 * 1000;
+    var msPerHour = msPerMinute * 60;
+    var msPerDay = msPerHour * 24;
+    var msPerMonth = msPerDay * 30;
+    var msPerYear = msPerDay * 365;
+
+    var elapsed = current - previous;
+
+    if (elapsed < msPerMinute) {
+         return Math.round(elapsed/1000) + ' seconds ago';   
+    }
+
+    else if (elapsed < msPerHour) {
+         return Math.round(elapsed/msPerMinute) + ' minutes ago';   
+    }
+
+    else if (elapsed < msPerDay ) {
+         return Math.round(elapsed/msPerHour ) + ' hours ago';   
+    }
+
+    else if (elapsed < msPerMonth) {
+        return 'approximately ' + Math.round(elapsed/msPerDay) + ' days ago';   
+    }
+
+    else if (elapsed < msPerYear) {
+        return 'approximately ' + Math.round(elapsed/msPerMonth) + ' months ago';   
+    }
+
+    else {
+        return 'approximately ' + Math.round(elapsed/msPerYear ) + ' years ago';   
+    }
 }
 
 export default getRelativeTime;

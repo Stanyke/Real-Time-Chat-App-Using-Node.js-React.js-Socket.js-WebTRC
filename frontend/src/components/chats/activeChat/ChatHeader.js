@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useContext } from "react";
+=======
+import React, { useEffect, useContext, useState } from "react";
+>>>>>>> e647a46e218e9885829c5ca446a7b287009165b0
 import {
   Box,
   Typography,
@@ -43,6 +47,13 @@ export default function ChatHeader(props) {
   const classes = useStyles();
   const {activeChat} = useContext(SocketContext);
   const { otherUser } = activeChat;
+  const [lastSeen, setLastSeen] = useState('');
+
+  useEffect(() => {
+    setInterval(() => {
+      setLastSeen(RelativeTimeFormat(user.lastSeen));
+    }, 1000);
+  }, []);
   
   return (
     <>
@@ -56,8 +67,9 @@ export default function ChatHeader(props) {
         <BottomNavigationAction label="Video" icon={<VideoCallIcon />} />
       </BottomNavigation>
       <Box className={classes.lastSeenBox}>
-        <Typography className={classes.lastSeenText}>{`Last Seen: ${RelativeTimeFormat(user.lastSeen)}`}</Typography>
+        <Typography className={classes.lastSeenText}>{`Last Seen: ${lastSeen}`}</Typography>
       </Box>
     </>
   );
 }
+ 
