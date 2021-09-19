@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import {
   Box,
   Typography,
@@ -53,7 +53,13 @@ const useStyles = makeStyles({
 export default function ChatHeader(props) {
   const { user } = props;
   const classes = useStyles();
+  const [lastSeen, setLastSeen] = useState('');
 
+  useEffect(() => {
+    setInterval(() => {
+      setLastSeen(RelativeTimeFormat(user.lastSeen));
+    }, 1000);
+  }, []);
   
   return (
     <>
@@ -67,8 +73,9 @@ export default function ChatHeader(props) {
         <BottomNavigationAction label="Video" icon={<VideoCallIcon />} />
       </BottomNavigation>
       <Box className={classes.lastSeenBox}>
-        <Typography className={classes.lastSeenText}>{`Last Seen: ${RelativeTimeFormat(user.lastSeen)}`}</Typography>
+        <Typography className={classes.lastSeenText}>{`Last Seen: ${lastSeen}`}</Typography>
       </Box>
     </>
   );
 }
+ 
