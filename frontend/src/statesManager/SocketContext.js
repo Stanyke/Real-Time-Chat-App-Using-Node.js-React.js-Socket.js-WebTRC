@@ -90,8 +90,8 @@ const SocketContextProvider = ({children}) => {
         console.log(data);
     }
 
-    const switchActiveChat = async (otherUserId) => {
-        setActiveChat(otherUserId);
+    const switchActiveChat = async (otherUser) => {
+        setActiveChat(otherUser);
     }
 
     return (

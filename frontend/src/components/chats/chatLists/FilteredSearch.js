@@ -30,8 +30,8 @@ export default function FilteredSearch({ chatsFilter, styles }) {
           {chatsFilter?.users.length ? <Typography className={styles.titleBar}>Users</Typography> : null}
           {chatsFilter?.users.map((user) => {
             return (
-              <Paper className={`${styles.paper} ${styles.singleChat}`} key={user.user._id} onClick={switchActiveChat(user.user._id)}>
-                {user.user.username}
+              <Paper className={`${styles.paper} ${styles.singleChat}`} key={user.otherUser._id} onClick={() => switchActiveChat(user)}>
+                {user.otherUser.username}
               </Paper>
             );
           })}

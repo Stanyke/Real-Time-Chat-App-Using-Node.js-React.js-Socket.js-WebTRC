@@ -1,29 +1,17 @@
-import React, { useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import {
   Box,
   Typography,
-  Button,
-  FormControl,
-  TextField,
   makeStyles,
 } from "@material-ui/core";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
-import { Link, useHistory } from "react-router-dom";
-import WaitForPageLoad from "../../WaitForPageLoad";
-import Header from "../../Header";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import AddIcCallIcon from '@material-ui/icons/AddIcCall';
 import VideoCallIcon from '@material-ui/icons/VideoCall';
 import PersonIcon from '@material-ui/icons/Person';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
 
-import { DashboardStyle } from "../../../assets/css/DashboardStyle";
-import AuthSidebar from "../../AuthSidebar";
 import { SocketContext } from "../../../statesManager";
-import ToastBar from "../../ToastBar";
 import RelativeTimeFormat from "../../RelativeTimeFormat";
 
 const useStyles = makeStyles({
@@ -53,7 +41,8 @@ const useStyles = makeStyles({
 export default function ChatHeader(props) {
   const { user } = props;
   const classes = useStyles();
-
+  const {activeChat} = useContext(SocketContext);
+  const { otherUser } = activeChat;
   
   return (
     <>
@@ -62,7 +51,7 @@ export default function ChatHeader(props) {
         className={classes.root}
       >
         <BottomNavigationAction className={classes.arrowBack} label="Chats" icon={<ArrowBackIcon />} />
-        <BottomNavigationAction label="Stanyke" icon={<PersonIcon />} />
+        <BottomNavigationAction label={otherUser.username} icon={<PersonIcon />} />
         <BottomNavigationAction label="Voice" icon={<AddIcCallIcon />} />
         <BottomNavigationAction label="Video" icon={<VideoCallIcon />} />
       </BottomNavigation>

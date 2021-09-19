@@ -55,6 +55,7 @@ export const DashboardStyle = (theme) => {
         rightPaper: {
             height: 'calc(100vh - 120px)',
             border: '1px solid white',
+            position: "relative",
         },
         singleChat: {
             cursor: 'pointer'

@@ -102,7 +102,7 @@ class userService{
         const currentUserConversations = await ConversationUser.find({userId: user_id}, "-__v");
         for await(const otherUser of users){
             const obj = await filterUserConversation(user_id, otherUser._id, currentUserConversations);
-            obj.user = otherUser;
+            obj.otherUser = otherUser;
             if(!obj.conversation || !obj.messages){
                 obj.conversation = {},
                 obj.messages = []
