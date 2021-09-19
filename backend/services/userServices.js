@@ -35,18 +35,12 @@ class userService{
 	}
 
     getUserById = async (id) => {
-        const user = await User.findById(id, '-__v');
-        if(user){
-            delete user.password;
-        }
+        const user = await User.findById(id, '-__v -password');
         return user;
     }
 
     getUserByUsername = async (username) => {
         const user = await User.findOne({username}, '-__v');
-        if(user){
-            delete user.password;
-        }
         return user;
     }
 
@@ -76,6 +70,7 @@ class userService{
             const newUser = new User(data);
             await newUser.save();
             user = await this.getUserByUsername(username);
+            delete user.password;
 
             await this.updateUserLastSeen(user._id);
             const token = await user.generateToken();
@@ -83,6 +78,7 @@ class userService{
             return appResponse(200, 'Login successful', {user, token, chats});
         }
         catch(err){
+            console.log('2222222222', err)
             return appResponse(500);
         }
     }

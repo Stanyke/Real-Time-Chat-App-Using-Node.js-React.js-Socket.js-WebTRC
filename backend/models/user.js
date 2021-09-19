@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const {jwtSecret} = require('../bin/config');
 
 const UserSchema = mongoose.Schema({
-    username: { type: String },
+    username: { type: String, lowercase: true },
     password: { type: String },
     lastSeen: { type: String, default: '' }
 }, { timestamps: true});

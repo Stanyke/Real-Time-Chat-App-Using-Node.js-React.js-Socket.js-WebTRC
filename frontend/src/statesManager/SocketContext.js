@@ -22,6 +22,7 @@ const SocketContextProvider = ({children}) => {
     const [chatsFilter, setChatsFilter] = useState({});
     const [searchInProgress, setSearchInProgress] = useState(false);
     const [activeChat, setActiveChat] = useState({});
+    const [onlineUsersId, setOnlineUsersId] = useState([]);
 
     const toastHandler = (toast) => {
         setToastData(toast);
@@ -53,7 +54,6 @@ const SocketContextProvider = ({children}) => {
             const {message, success, user, token, authVerified, chats} = data;
             let toast;
             if(success){
-                toast = { type: 'success', message, duration: 6000 };
                 setUser(user);
                 setChats(chats);
                 setpageLoaded(true);// Since user is authenticated
@@ -72,8 +72,16 @@ const SocketContextProvider = ({children}) => {
                     window.location = '/';
                 }
                 toast = { type: 'error', message, duration: 6000 };
+                toastHandler(toast);
             }
-            toastHandler(toast);
+        });
+
+        socket.on('onlineUserId', async (userId) => {
+            console.log('onnnnnnnnnnn', userId)
+        });
+
+        socket.on('offlineUserId', async (userId) => {
+            console.log('offffffffffff', userId)
         });
     }, []);
 
