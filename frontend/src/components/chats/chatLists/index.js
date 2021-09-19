@@ -18,9 +18,19 @@ import { DashboardStyle } from "../../../assets/css/DashboardStyle";
 import AuthSidebar from "../../AuthSidebar";
 import { SocketContext } from "../../../statesManager";
 import ToastBar from "../../ToastBar";
+import Stack from '@mui/material/Stack';
+import LinearProgress from '@mui/material/LinearProgress';
 
 export default function ChatLists(props) {
-  const {styles, chats, chatsFilter} = props;
+  const {styles, chats, chatsFilter, searchInProgress} = props;
+  
+  if(searchInProgress){
+    return (<Stack sx={{ width: '100%', color: 'grey.500' }} spacing={4}>
+      <LinearProgress color="secondary" />
+      <LinearProgress color="success" />
+      <LinearProgress color="inherit" />
+    </Stack>)
+  }
   
   if(chatsFilter?.success){
     return <FilteredSearch chatsFilter={chatsFilter} styles={styles} />

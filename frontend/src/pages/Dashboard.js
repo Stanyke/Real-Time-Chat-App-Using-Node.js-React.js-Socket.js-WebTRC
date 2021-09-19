@@ -24,7 +24,7 @@ import ToastBar from "../components/ToastBar";
 const useStyles = makeStyles((theme) => DashboardStyle(theme));
 
 export default function Dashboard() {
-  const { user, showToast, authToken, pageLoaded, chats, chatsFilter, activeChat } = useContext(SocketContext);
+  const { user, showToast, authToken, pageLoaded, chats, chatsFilter, activeChat, searchInProgress } = useContext(SocketContext);
   const classes = useStyles();
   const history = useHistory();
   const [hasToken, setHasToken] = useState(true);
@@ -47,7 +47,7 @@ export default function Dashboard() {
         <Header user={user} setHasToken={setHasToken} />
         <Box className={classes.root}>
           <Box className={`${classes.box} ${classes.leftSide}`}>
-            <ChatLists chats={chats} chatsFilter={chatsFilter} styles={classes}/>
+            <ChatLists chats={chats} chatsFilter={chatsFilter} searchInProgress={searchInProgress} styles={classes}/>
           </Box>
           <Box className={`${classes.box} ${classes.rightSider}`}>
             <Paper className={classes.rightPaper}>

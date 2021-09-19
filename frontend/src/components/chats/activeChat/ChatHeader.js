@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React, { useContext } from "react";
-=======
 import React, { useEffect, useContext, useState } from "react";
->>>>>>> e647a46e218e9885829c5ca446a7b287009165b0
 import {
   Box,
   Typography,

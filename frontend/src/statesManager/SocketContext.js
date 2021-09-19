@@ -20,6 +20,7 @@ const SocketContextProvider = ({children}) => {
     const [authToken, setAuthToken] = useState(localStorage.getItem("token"));
     const [chats, setChats] = useState({});
     const [chatsFilter, setChatsFilter] = useState({});
+    const [searchInProgress, setSearchInProgress] = useState(false);
     const [activeChat, setActiveChat] = useState({});
 
     const toastHandler = (toast) => {
@@ -83,9 +84,12 @@ const SocketContextProvider = ({children}) => {
 
     const searchThroughChats = async (search) => {
         if(!search){
+            setSearchInProgress(false);
             return setChatsFilter({});
         }
+        setSearchInProgress(true);
         const {data} = await axios.get(`/api/v1/chats?search=${search}`);
+        setSearchInProgress(false);
         setChatsFilter(data);
         console.log(data);
     }
@@ -109,7 +113,8 @@ const SocketContextProvider = ({children}) => {
             chatsFilter,
             searchThroughChats,
             activeChat,
-            switchActiveChat
+            switchActiveChat,
+            searchInProgress
         }}>
             {children}
         </SocketContext.Provider>

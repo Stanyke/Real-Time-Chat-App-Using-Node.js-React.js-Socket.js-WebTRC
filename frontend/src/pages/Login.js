@@ -45,9 +45,7 @@ export default function Login() {
 
       <Box className={classes.rightSideContainer}>
         <Grid className={classes.formBox}>
-          {!hasInternetConnection && (
-            <ToastBar />
-          )}
+          <ToastBar />
           <Box>
             <Typography className={classes.formNotice}>Hello!</Typography>
           </Box>
