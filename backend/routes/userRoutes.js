@@ -7,6 +7,7 @@ module.exports = function () {
 
     router.get('/ping', userCtrl.pingMe);
     router.get('/chats', authenticate, userCtrl.search);
+    router.get('/user', authenticate, userCtrl.getUser)
 
 
     return router;

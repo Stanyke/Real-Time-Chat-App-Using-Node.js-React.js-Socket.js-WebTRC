@@ -41,15 +41,22 @@ const useStyles = makeStyles({
 export default function ChatHeader(props) {
   const { user } = props;
   const classes = useStyles();
-  const {activeChat} = useContext(SocketContext);
+  const {activeChat, onlineUsersId, getUserFromDb} = useContext(SocketContext);
   const { otherUser } = activeChat;
   const [lastSeen, setLastSeen] = useState('');
+  const [isOnline, setIsOnline] = useState(false);
 
   useEffect(() => {
-    setInterval(() => {
-      setLastSeen(RelativeTimeFormat(user.lastSeen));
-    }, 1000);
-  }, []);
+    if(onlineUsersId.includes(user._id.toString())) {
+      setIsOnline(true);
+      setLastSeen('Online');
+    } else {
+      setIsOnline(false);
+      setInterval(() => {
+        setLastSeen(RelativeTimeFormat(user.lastSeen));
+      }, 1000);
+    }
+  }, [onlineUsersId, lastSeen]);
   
   return (
     <>
@@ -63,7 +70,7 @@ export default function ChatHeader(props) {
         <BottomNavigationAction label="Video" icon={<VideoCallIcon />} />
       </BottomNavigation>
       <Box className={classes.lastSeenBox}>
-        <Typography className={classes.lastSeenText}>{`Last Seen: ${lastSeen}`}</Typography>
+        <Typography className={classes.lastSeenText}>{`Last Seen: ${isOnline ? 'Online' : lastSeen}`}</Typography>
       </Box>
     </>
   );

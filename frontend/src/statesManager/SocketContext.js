@@ -77,11 +77,16 @@ const SocketContextProvider = ({children}) => {
         });
 
         socket.on('onlineUserId', async (userId) => {
-            console.log('onnnnnnnnnnn', userId)
+            // console.log('onnnnnnnnnnn', userId)
         });
 
         socket.on('offlineUserId', async (userId) => {
-            console.log('offffffffffff', userId)
+            // console.log('offffffffffff', userId)
+        });
+
+        socket.on('allOnlineUsersId', async (usersId) => {
+            // console.log('00000000000', usersId)
+            setOnlineUsersId(usersId);
         });
     }, []);
 
@@ -106,6 +111,21 @@ const SocketContextProvider = ({children}) => {
         setActiveChat(otherUser);
     }
 
+    const getUserFromDb = async (option) => {
+        const {username, id} = option;
+        let user;
+        if(username){
+            const {data} = await axios.get(`/api/v1/user?username=${username}`);
+            user = data?.otherUser;
+        }
+
+        if(id){
+            const {data} = await axios.get(`/api/v1/user?id=${id}`);
+            user = data?.otherUser;
+        }
+        return user;
+    }
+
     return (
         <SocketContext.Provider value={{
             setupUser,
@@ -122,7 +142,9 @@ const SocketContextProvider = ({children}) => {
             searchThroughChats,
             activeChat,
             switchActiveChat,
-            searchInProgress
+            searchInProgress,
+            onlineUsersId,
+            getUserFromDb
         }}>
             {children}
         </SocketContext.Provider>

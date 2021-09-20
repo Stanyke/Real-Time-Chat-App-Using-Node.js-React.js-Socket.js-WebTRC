@@ -21,4 +21,19 @@ module.exports = function userController() {
         const data = await userServiceInstance.search(options);
         return res.status(data.statusCode).json(data.data);
     }
+
+    this.getUser = async (req, res) => {
+        const { username, id } = req.query;
+        let data;
+        if(username){
+            data = await userServiceInstance.getUserByUsername(username);
+        }
+        
+        if(id){
+            data = await userServiceInstance.getUserById(id);
+        }
+
+        data = await appResponse(200, 'User fetched', {otherUser: data});
+        return res.status(data.statusCode).json(data.data);
+    }
 }

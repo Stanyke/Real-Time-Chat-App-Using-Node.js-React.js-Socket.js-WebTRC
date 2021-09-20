@@ -8,11 +8,11 @@ export default function ActiveChat(props) {
   const {user, chats} = props;
   const {activeChat} = useContext(SocketContext);
 
-  console.log('999999999', activeChat)
   if(Object.keys(activeChat).length > 0){
+    const {conversation, otherUser, messages} = activeChat;
     return (
       <>
-          <ChatHeader user={user} />
+          <ChatHeader user={otherUser} />
           <ChatContent />
           <MessageField />
       </>

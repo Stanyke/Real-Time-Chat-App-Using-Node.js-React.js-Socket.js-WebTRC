@@ -16,6 +16,7 @@ io.on("connection", (socket) => {
         currentUserId = response.data.user._id.toString();
         activeUsersId.push(currentUserId);
         socket.broadcast.emit("onlineUserId", currentUserId);
+        socket.broadcast.emit("allOnlineUsersId", activeUsersId);
     }
   });
 
@@ -27,13 +28,20 @@ io.on("connection", (socket) => {
         currentUserId = response.data.user._id.toString();
         activeUsersId.push(currentUserId);
         socket.broadcast.emit("onlineUserId", currentUserId);
+        socket.broadcast.emit("allOnlineUsersId", activeUsersId);
     }
   });
 
   socket.on("disconnect", async () => {
-    let remove_id = activeUsersId.indexOf(currentUserId);
-    activeUsersId.splice(remove_id, 1);
-    socket.broadcast.emit("offlineUserId", currentUserId);
+    if(currentUserId){
+      let remove_id = activeUsersId.indexOf(currentUserId.toString());
+      if(remove_id > -1){
+        activeUsersId.splice(remove_id, 1);
+        socket.broadcast.emit("offlineUserId", currentUserId);
+        socket.broadcast.emit("allOnlineUsersId", activeUsersId);
+        await userServiceInstance.updateUserLastSeen(currentUserId);
+      }
+    }
   });
 });
 
