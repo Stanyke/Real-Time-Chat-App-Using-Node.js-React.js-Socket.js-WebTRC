@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -11,7 +11,7 @@ import VideoCallIcon from '@material-ui/icons/VideoCall';
 import PersonIcon from '@material-ui/icons/Person';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
-import { SocketContext } from "../../../statesManager";
+import useApp from "../../../store/contexts/AppContext";
 import RelativeTimeFormat from "../../RelativeTimeFormat";
 
 const useStyles = makeStyles({
@@ -41,7 +41,9 @@ const useStyles = makeStyles({
 export default function ChatHeader(props) {
   const { user } = props;
   const classes = useStyles();
-  const {activeChat, onlineUsersId, getUserFromDb} = useContext(SocketContext);
+  const {
+    appState: {activeChat, onlineUsersId}
+  } = useApp();
   const { otherUser } = activeChat;
   const [lastSeen, setLastSeen] = useState('');
   const [isOnline, setIsOnline] = useState(false);

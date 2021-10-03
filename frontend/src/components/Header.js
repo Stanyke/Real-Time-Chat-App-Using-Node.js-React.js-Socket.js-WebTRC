@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import { alpha, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -13,7 +13,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import {SocketContext} from "../statesManager";
+import useApp from "../store/contexts/AppContext";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -81,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header(props) {
   const { user, setHasToken } = props;
-  const { removeToken, searchThroughChats } = useContext(SocketContext);
+  const { removeToken, searchThroughChats } = useApp();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -109,7 +109,7 @@ export default function Header(props) {
   const logoutUser = async () => {
     await removeToken();
     setHasToken(false);
-  }
+  };
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (

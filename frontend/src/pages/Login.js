@@ -12,14 +12,17 @@ import { useHistory } from "react-router-dom";
 
 import { AuthStyle } from "../assets/css/AuthStyle";
 import AuthSidebar from "../components/AuthSidebar";
-import { SocketContext } from "../statesManager";
+import useApp from "../store/contexts/AppContext";
 import ToastBar from "../components/ToastBar";
 
 const useStyles = makeStyles((theme) => AuthStyle(theme));
-const {REACT_APP_AFTER_LOGIN_REDIRECT_URL} = process.env;
+const { REACT_APP_AFTER_LOGIN_REDIRECT_URL } = process.env;
 
 export default function Login() {
-  const { setupUser, showToast, authToken, hasInternetConnection } = useContext(SocketContext);
+  const {
+    appState: { showToast, authToken, hasInternetConnection },
+    setupUser
+  } = useApp();
   const classes = useStyles();
   const history = useHistory();
 
@@ -32,15 +35,13 @@ export default function Login() {
   };
 
   useEffect(() => {
-    if(authToken){
+    if (authToken) {
       return history.push(REACT_APP_AFTER_LOGIN_REDIRECT_URL);
     }
   }, [authToken]);
 
-  
   return (
     <Grid container className={classes.homeScreen}>
-
       <AuthSidebar styles={classes} />
 
       <Box className={classes.rightSideContainer}>

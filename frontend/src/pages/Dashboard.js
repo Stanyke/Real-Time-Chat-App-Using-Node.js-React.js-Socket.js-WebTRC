@@ -18,13 +18,24 @@ import EmptyChatDashboard from "../components/chats/activeChat/EmptyChatDashboar
 
 import { DashboardStyle } from "../assets/css/DashboardStyle";
 import AuthSidebar from "../components/AuthSidebar";
-import { SocketContext } from "../statesManager";
+import useApp from "../store/contexts/AppContext";
 import ToastBar from "../components/ToastBar";
 
 const useStyles = makeStyles((theme) => DashboardStyle(theme));
 
 export default function Dashboard() {
-  const { user, showToast, authToken, pageLoaded, chats, chatsFilter, activeChat, searchInProgress } = useContext(SocketContext);
+  const {
+    appState: {
+      user,
+      showToast,
+      authToken,
+      isLoading,
+      chats,
+      chatsFilter,
+      activeChat,
+      searchInProgress,
+    },
+  } = useApp();
   const classes = useStyles();
   const history = useHistory();
   const [hasToken, setHasToken] = useState(true);
@@ -39,7 +50,7 @@ export default function Dashboard() {
     checkUserLoginState(authToken);
   }, [hasToken]);
 
-  if (!pageLoaded) {
+  if (!isLoading) {
     return <WaitForPageLoad />;
   } else {
     return (
@@ -47,12 +58,17 @@ export default function Dashboard() {
         <Header user={user} setHasToken={setHasToken} />
         <Box className={classes.root}>
           <Box className={`${classes.box} ${classes.leftSide}`}>
-            <ChatLists chats={chats} chatsFilter={chatsFilter} searchInProgress={searchInProgress} styles={classes}/>
+            <ChatLists
+              chats={chats}
+              chatsFilter={chatsFilter}
+              searchInProgress={searchInProgress}
+              styles={classes}
+            />
           </Box>
           <Box className={`${classes.box} ${classes.rightSider}`}>
             <Paper className={classes.rightPaper}>
-                <ActiveChat chats={chats} user={user} />
-                <EmptyChatDashboard user={user} activeChat={activeChat} />
+              <ActiveChat chats={chats} user={user} />
+              <EmptyChatDashboard user={user} activeChat={activeChat} />
             </Paper>
           </Box>
         </Box>

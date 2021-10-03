@@ -1,20 +1,22 @@
-import React, {useContext} from 'react';
+import React from "react";
 import ChatHeader from "./ChatHeader";
 import ChatContent from "./ChatContent";
 import MessageField from "./MessageField";
-import {SocketContext} from "../../../statesManager";
+import useApp from "../../../store/contexts/AppContext";
 
 export default function ActiveChat(props) {
-  const {user, chats} = props;
-  const {activeChat} = useContext(SocketContext);
+  const { user, chats } = props;
+  const {
+    appState: { activeChat },
+  } = useApp();
 
-  if(Object.keys(activeChat).length > 0){
-    const {conversation, otherUser, messages} = activeChat;
+  if (Object.keys(activeChat).length > 0) {
+    const { conversation, otherUser, messages } = activeChat;
     return (
       <>
-          <ChatHeader user={otherUser} />
-          <ChatContent />
-          <MessageField />
+        <ChatHeader user={otherUser} />
+        <ChatContent />
+        <MessageField />
       </>
     );
   }

@@ -2,11 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import { SocketContextProvider } from "./statesManager";
+import AppProvider from './store/providers/AppProvider';
 
 ReactDOM.render(
-  <SocketContextProvider>
+  <AppProvider>
     <App />
-  </SocketContextProvider>,
+  </AppProvider>,
   document.getElementById("root")
 );
