@@ -10,6 +10,7 @@ const ACTIONS = {
   SET_ONLINE_USERS_ID: "set_online_users_id",
   FILTER_CHATS: "filter_chats",
   SET_ACTIVE_CHAT: "set_active_chat",
+  UPDATE_ACTIVE_CHAT_USER: "update_active_chat_user"
 };
 
 export default ACTIONS;

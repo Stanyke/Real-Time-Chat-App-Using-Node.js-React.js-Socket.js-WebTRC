@@ -47,18 +47,20 @@ export default function ChatHeader(props) {
   const { otherUser } = activeChat;
   const [lastSeen, setLastSeen] = useState('');
   const [isOnline, setIsOnline] = useState(false);
+  const [lastSeenTimer, setLastSeenTimer] = useState('');
 
   useEffect(() => {
     if(onlineUsersId.includes(user._id.toString())) {
       setIsOnline(true);
       setLastSeen('Online');
     } else {
+      clearInterval(lastSeenTimer);
       setIsOnline(false);
-      setInterval(() => {
+      setLastSeenTimer(setInterval(() => {
         setLastSeen(RelativeTimeFormat(user.lastSeen));
-      }, 1000);
+      }, 1000));
     }
-  }, [onlineUsersId, lastSeen]);
+  }, [onlineUsersId, lastSeen, user]);
   
   return (
     <>

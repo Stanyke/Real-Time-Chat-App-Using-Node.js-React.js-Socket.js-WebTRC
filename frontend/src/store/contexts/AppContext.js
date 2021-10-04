@@ -14,6 +14,7 @@ const {
   SET_ONLINE_USERS_ID,
   FILTER_CHATS,
   SET_ACTIVE_CHAT,
+  UPDATE_ACTIVE_CHAT_USER
 } = ACTIONS;
 
 const { REACT_APP_SERVER_URL } = process.env;
@@ -25,7 +26,7 @@ function useApp() {
 
   const [appState, dispatch] = context;
 
-  const { socket, authToken, hasInternetConnection } = appState;
+  const { socket, authToken, hasInternetConnection, user, activeChat } = appState;
 
   const pageLoaderhandler = (status) => {
     dispatch({
@@ -49,6 +50,7 @@ function useApp() {
     dispatch({
       type: LOGOUT_USER,
     });
+    socket.emit('logoutUser', user._id);
   };
 
   const internetConnectionChecker = () => {
@@ -118,12 +120,20 @@ function useApp() {
     });
 
     socket.off("allOnlineUsersId").on("allOnlineUsersId", async (usersId) => {
-      // console.log('00000000000', usersId)
       dispatch({
         type: SET_ONLINE_USERS_ID,
         payload: usersId,
       });
     });
+
+    socket.off("updatedUserData").on("updatedUserData", async (userData) => {
+      if(activeChat?.otherUser?._id.toString() === userData._id.toString()) {
+        dispatch({
+          type: UPDATE_ACTIVE_CHAT_USER,
+          payload: userData
+        });
+      }
+    })
   }, []);
 
   const setupUser = ({ username, password }) => {

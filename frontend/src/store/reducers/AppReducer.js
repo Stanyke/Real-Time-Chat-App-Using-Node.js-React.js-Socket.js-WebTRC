@@ -10,7 +10,8 @@ const {
   SET_USER_TOKEN,
   SET_ONLINE_USERS_ID,
   FILTER_CHATS,
-  SET_ACTIVE_CHAT
+  SET_ACTIVE_CHAT,
+  UPDATE_ACTIVE_CHAT_USER,
 } = ACTIONS;
 
 export default function appReducer(state, action) {
@@ -51,29 +52,36 @@ export default function appReducer(state, action) {
       return {
         ...state,
         chats: action.payload,
-      }
+      };
     case SET_USER_TOKEN:
       localStorage.setItem("token", action.payload);
       return {
         ...state,
         authToken: action.payload,
-      }
+      };
     case SET_ONLINE_USERS_ID:
       return {
         ...state,
-        onlineUsersId: action.payload,
-      }
+        onlineUsersId: [...action.payload],
+      };
     case FILTER_CHATS:
       return {
         ...state,
         chatsFilter: action.payload.chats,
         searchInProgress: action.payload.searchInProgress,
-      }
+      };
     case SET_ACTIVE_CHAT:
       return {
         ...state,
         activeChat: action.payload,
-      }
+      };
+    case UPDATE_ACTIVE_CHAT_USER:
+      return {
+        ...state,
+        activeChat: {
+          otherUser: action.payload,
+        },
+      };
     default:
       return state;
   }
